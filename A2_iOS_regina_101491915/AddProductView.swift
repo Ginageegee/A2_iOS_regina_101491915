@@ -40,4 +40,26 @@ struct AddProductView: View {
         .navigationTitle("Add Product")
     }
 
+    private func saveProduct() {
+        guard let id = Int64(productID),
+              let price = Double(productPrice),
+              !productName.isEmpty else {
+            print("Invalid input")
+            return
+        }
+
+        let newProduct = Product(context: viewContext)
+        newProduct.productID = id
+        newProduct.productName = productName
+        newProduct.productDescription = productDescription
+        newProduct.productPrice = price
+        newProduct.productProvider = productProvider
+
+        do {
+            try viewContext.save()
+            dismiss()
+        } catch {
+            print("Error saving product: \(error)")
+        }
+    }
 }
