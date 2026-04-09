@@ -1,12 +1,17 @@
 import SwiftUI
 import CoreData
 
+//screen for searching products
 struct SearchProductView: View {
+    // gives access to Core Data (database)
     @Environment(\.managedObjectContext) private var viewContext
-
+    
+    // stores what the user types into the search box
     @State private var searchText = ""
+    // stores the search results
     @State private var results: [Product] = []
-
+    
+    //styling
     var body: some View {
         VStack(spacing: 20) {
             
@@ -77,15 +82,19 @@ struct SearchProductView: View {
         .padding(.bottom)
         .navigationTitle("Search Products")
     }
-
+    
+    // Function to search products in Core Data
     private func searchProducts() {
+        // Create a fetch request
         let request: NSFetchRequest<Product> = Product.fetchRequest()
-
+        
+        //If search box is empty, clear results
         if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             results = []
             return
         }
-
+        
+        // Filter results where name OR description contains the search text
         request.predicate = NSPredicate(
             format: "productName CONTAINS[cd] %@ OR productDescription CONTAINS[cd] %@",
             searchText,
