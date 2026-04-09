@@ -9,16 +9,19 @@ import SwiftUI
 import CoreData
 
 struct AddProductView: View {
+    //give access to core data to save product
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
-
+    
+    //variables for user input
     @State private var productID = ""
     @State private var productName = ""
     @State private var productDescription = ""
     @State private var productPrice = ""
     @State private var productProvider = ""
     @State private var errorMessage = ""
-
+    
+    //styleing
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
@@ -75,13 +78,16 @@ struct AddProductView: View {
         }
         .navigationTitle("Add Product")
     }
-
+    
+    //save product funstion
     private func saveProduct() {
+        //check if product id is of a valid type
         guard let id = Int64(productID) else {
             errorMessage = "Please enter a valid Product ID."
             return
         }
-
+        
+        //check if price is of a vaild type
         guard let price = Double(productPrice) else {
             errorMessage = "Please enter a valid Product Price."
             return

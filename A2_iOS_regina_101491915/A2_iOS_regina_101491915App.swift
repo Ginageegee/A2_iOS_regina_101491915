@@ -12,7 +12,7 @@ import CoreData
 @main
 struct A2_iOS_regina_101491915App: App {
     
-    //Creats a shared instance of core data controller
+    //Creats a shared instance of core data controller (gives access to the data)
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {
