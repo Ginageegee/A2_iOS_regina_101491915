@@ -8,12 +8,16 @@
 import SwiftUI
 import CoreData
 
+//screen that shows all products
 struct ProductListView: View {
+    
+    //get all products from core data
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Product.productID, ascending: true)],
         animation: .default)
     private var products: FetchedResults<Product>
 
+    //styling
     var body: some View {
         List {
             ForEach(products) { product in
