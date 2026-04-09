@@ -2,15 +2,18 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
+    //access to core data
     @Environment(\.managedObjectContext) private var viewContext
-
+    
+    //get all products from core data
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Product.productID, ascending: true)],
         animation: .default)
     private var products: FetchedResults<Product>
 
     @State private var currentIndex = 0
-
+    
+    //styleing
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
@@ -26,7 +29,7 @@ struct ContentView: View {
                         .bold()
                         .foregroundColor(.blue)
 
-                    // Navigation Links (Styled)
+                    // Navigation Links
                     VStack(spacing: 10) {
                         NavigationLink("View Full Product List") {
                             ProductListView()
@@ -88,7 +91,7 @@ struct ContentView: View {
                     }
                     .padding()
 
-                    // Your Name + Student ID (for grading)
+                   
                     Text("Regina Slonimsky - 101491915")
                         .font(.footnote)
                         .foregroundColor(.gray)
