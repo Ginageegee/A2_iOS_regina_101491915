@@ -92,19 +92,22 @@ struct AddProductView: View {
             errorMessage = "Please enter a valid Product Price."
             return
         }
-
+        
+        //check if product name is filled out
         guard !productName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             errorMessage = "Product Name cannot be empty."
             return
         }
-
+        
+        //create the new product in database
         let newProduct = Product(context: viewContext)
         newProduct.productID = id
         newProduct.productName = productName
         newProduct.productDescription = productDescription
         newProduct.productPrice = price
         newProduct.productProvider = productProvider
-
+        
+        //error handling
         do {
             try viewContext.save()
             dismiss()
