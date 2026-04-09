@@ -8,13 +8,16 @@
 import SwiftUI
 import CoreData
 
+//entry point for app
 @main
 struct A2_iOS_regina_101491915App: App {
+    
+    //Creats a shared instance of core data controller
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView() //loads main screen
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
