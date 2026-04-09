@@ -8,41 +8,73 @@ struct SearchProductView: View {
     @State private var results: [Product] = []
 
     var body: some View {
-        VStack {
-            HStack {
-                TextField("Search by name or description", text: $searchText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+        VStack(spacing: 20) {
+            
+            Text("Search Products")
+                .font(.largeTitle)
+                .bold()
+                .foregroundColor(.blue)
+                .padding(.top)
 
-                Button("Search") {
-                    searchProducts()
+            VStack(spacing: 12) {
+                HStack {
+                    TextField("Search by name or description", text: $searchText)
+                        .textFieldStyle(.roundedBorder)
+
+                    Button("Search") {
+                        searchProducts()
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
             }
             .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            .shadow(radius: 3)
+            .padding(.horizontal)
 
             if results.isEmpty {
                 Spacer()
                 Text("No matching products found")
                     .foregroundColor(.gray)
+                    .font(.headline)
                 Spacer()
             } else {
                 List {
                     ForEach(results, id: \.objectID) { product in
-                        VStack(alignment: .leading, spacing: 6) {
+                        VStack(alignment: .leading, spacing: 10) {
+                            
                             Text(product.productName ?? "No Name")
                                 .font(.headline)
+                                .foregroundColor(.primary)
+
+                            Text("Description:")
+                                .font(.caption)
+                                .foregroundColor(.gray)
 
                             Text(product.productDescription ?? "No Description")
                                 .font(.subheadline)
-                                .foregroundColor(.gray)
+                                .foregroundColor(.secondary)
 
                             Text("Price: $\(product.productPrice, specifier: "%.2f")")
+                                .font(.subheadline)
+                                .bold()
+
                             Text("Provider: \(product.productProvider ?? "")")
+                                .font(.caption)
+                                .foregroundColor(.gray)
                         }
-                        .padding(.vertical, 4)
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(12)
+                        .shadow(radius: 2)
+                        .padding(.vertical, 6)
                     }
                 }
+                .listStyle(.plain)
             }
         }
+        .padding(.bottom)
         .navigationTitle("Search Products")
     }
 
