@@ -17,34 +17,78 @@ struct AddProductView: View {
     @State private var productDescription = ""
     @State private var productPrice = ""
     @State private var productProvider = ""
+    @State private var errorMessage = ""
 
     var body: some View {
-        Form {
-            Section(header: Text("Product Info")) {
-                TextField("Product ID", text: $productID)
-                    .keyboardType(.numberPad)
+        ScrollView {
+            VStack(spacing: 20) {
+                
+                Text("Add New Product")
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.blue)
+                    .padding(.top)
 
-                TextField("Product Name", text: $productName)
-                TextField("Description", text: $productDescription)
+                VStack(alignment: .leading, spacing: 15) {
+                    
+                    Text("Product Information")
+                        .font(.headline)
+                        .foregroundColor(.primary)
 
-                TextField("Price", text: $productPrice)
-                    .keyboardType(.decimalPad)
+                    TextField("Enter Product ID", text: $productID)
+                        .keyboardType(.numberPad)
+                        .textFieldStyle(.roundedBorder)
 
-                TextField("Provider", text: $productProvider)
+                    TextField("Enter Product Name", text: $productName)
+                        .textFieldStyle(.roundedBorder)
+
+                    TextField("Enter Product Description", text: $productDescription)
+                        .textFieldStyle(.roundedBorder)
+
+                    TextField("Enter Product Price", text: $productPrice)
+                        .keyboardType(.decimalPad)
+                        .textFieldStyle(.roundedBorder)
+
+                    TextField("Enter Product Provider", text: $productProvider)
+                        .textFieldStyle(.roundedBorder)
+                }
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(12)
+                .shadow(radius: 3)
+
+                if !errorMessage.isEmpty {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .font(.footnote)
+                }
+
+                Button("Save Product") {
+                    saveProduct()
+                }
+                .buttonStyle(.borderedProminent)
+                .padding(.top, 10)
+
+                Spacer()
             }
-
-            Button("Save Product") {
-                saveProduct()
-            }
+            .padding()
         }
         .navigationTitle("Add Product")
     }
 
     private func saveProduct() {
-        guard let id = Int64(productID),
-              let price = Double(productPrice),
-              !productName.isEmpty else {
-            print("Invalid input")
+        guard let id = Int64(productID) else {
+            errorMessage = "Please enter a valid Product ID."
+            return
+        }
+
+        guard let price = Double(productPrice) else {
+            errorMessage = "Please enter a valid Product Price."
+            return
+        }
+
+        guard !productName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            errorMessage = "Product Name cannot be empty."
             return
         }
 
@@ -59,6 +103,7 @@ struct AddProductView: View {
             try viewContext.save()
             dismiss()
         } catch {
+            errorMessage = "Error saving product."
             print("Error saving product: \(error)")
         }
     }
