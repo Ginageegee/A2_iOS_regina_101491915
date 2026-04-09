@@ -46,4 +46,26 @@ struct SearchProductView: View {
         .navigationTitle("Search Products")
     }
 
+    private func searchProducts() {
+        let request: NSFetchRequest<Product> = Product.fetchRequest()
+
+        if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            results = []
+            return
+        }
+
+        request.predicate = NSPredicate(
+            format: "productName CONTAINS[cd] %@ OR productDescription CONTAINS[cd] %@",
+            searchText,
+            searchText
+        )
+
+        request.sortDescriptors = [NSSortDescriptor(key: "productID", ascending: true)]
+
+        do {
+            results = try viewContext.fetch(request)
+        } catch {
+            print("Search failed: \(error)")
+        }
+    }
 }
