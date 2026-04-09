@@ -1,5 +1,6 @@
 import CoreData
 
+//controls how core data is set up and used
 struct PersistenceController {
     static let shared = PersistenceController()
 
@@ -8,6 +9,7 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
+        //create 10 sample data for testing and viewing
         for i in 1...10 {
             let newProduct = Product(context: viewContext)
             newProduct.productID = Int64(i)
@@ -26,8 +28,10 @@ struct PersistenceController {
         
         return result
     }()
-
+    
+    //Main database set up
     let container: NSPersistentContainer
+    //start core data when app starts
 
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "A2_iOS_regina_101491915")
@@ -42,10 +46,12 @@ struct PersistenceController {
             }
         })
         
+        //auto update ui when data changes
         container.viewContext.automaticallyMergesChangesFromParent = true
         self.addSampleProductsIfNeeded()
     }
-
+    
+    //function to add sample data
     func addSampleProductsIfNeeded() {
         let viewContext = container.viewContext
         let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
